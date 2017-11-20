@@ -107,7 +107,7 @@ public class BinarySearchTree {
 	{
 		if (x == null || target.getId() == x.getKey().getId())
 			return x;
-		if (target.getId() > x.getKey().getId()) // <||>
+		if (target.getId() < x.getKey().getId()) // <||>
 			return search(x.getLeft(), target);
 		return search(x.getRight(), target);
 	}

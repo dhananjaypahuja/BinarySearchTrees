@@ -3,6 +3,7 @@ package Pahuja_PA2;
 public class Patient implements Comparable<Patient> {
 	public String name;
 	public int id;
+	public int id2;
 
 	public Patient(String name, int id) {
 		this.name = name;
