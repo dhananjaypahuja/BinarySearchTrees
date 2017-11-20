@@ -3,7 +3,6 @@ package Pahuja_PA2;
 public class Patient implements Comparable<Patient> {
 	public String name;
 	public int id;
-	public int id2;
 
 	public Patient(String name, int id) {
 		this.name = name;
@@ -11,11 +10,11 @@ public class Patient implements Comparable<Patient> {
 	}
 
 	public String toString() {
-		return "The Patient Name with code: " + name + " (" + id + ")";
+		return "Patient Details: " + name + " (" + id + ")";
 	}
 
 	/*
-	 * Compares id to determine which patient has higher priority
+	 * Compares two patients based on id
 	 */
 	@Override
 	public int compareTo(Patient p) {
@@ -33,10 +32,18 @@ public class Patient implements Comparable<Patient> {
 	}
 
 	/*
-	 * gets the id of the patient
+	 * gets ID
 	 */
 	public int getId() {
 		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

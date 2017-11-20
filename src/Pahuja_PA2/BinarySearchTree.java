@@ -102,7 +102,7 @@ public class BinarySearchTree {
 		inorderTreeWalk(root);
 	}
 
-	// Search BST for target value
+	
 	public Node search(Node x, Patient target) // Patient or int target.key?
 	{
 		if (x == null || target.getId() == x.getKey().getId())
@@ -112,32 +112,13 @@ public class BinarySearchTree {
 		return search(x.getRight(), target);
 	}
 
-	// //searches the BST for a specific key
-	// public Node search( Node x, Patient target)
-	// {
-	// while( x != null && target.getId() != x.key.id)
-	// {
-	//
-	// if(target.getId() < x.key.id)
-	// {
-	// x = x.left;
-	// }
-	// else
-	// {
-	// x = x.right;
-	// }
-	//
-	// }
-	// return x;
-	// }
-
-	// simply inserts a new Node into the tree
+	//search a Node
 	public Node search(Patient value) {
 		return search(root, value);
 
 	}
 
-	// finds the minimum value in the tree, located at the left-most node
+	// finds the minimum value in the tree
 	public Node treeMinimum(Node x) {
 		while (x.left != null) {
 			x = x.left;
@@ -145,13 +126,13 @@ public class BinarySearchTree {
 		return x;
 	}
 
-	// inserts a Node, ensuring BST property is still followed
+	// insert a Node
 	public void treeInsert(Node z) {
 		Node y = null;
 		Node x = this.root;
 		while (x != null) {
 			y = x;
-			if (z.key.id < y.key.id) { // z.key < y.key
+			if (z.key.id < y.key.id) {
 				x = x.left;
 			} else {
 				x = x.right;
@@ -160,7 +141,7 @@ public class BinarySearchTree {
 		z.parent = y;
 		if (y == null) {
 			this.root = z;
-		} else if (z.key.id < y.key.id) { // z.key < y.key
+		} else if (z.key.id < y.key.id) {
 			y.left = z;
 		} else {
 			y.right = z;
@@ -174,9 +155,7 @@ public class BinarySearchTree {
 
 	}
 
-	// replaces subtree rooted at u as a child of parents with another subtree
-	// rooted at v
-	// acts as a helper method for treeDelete()
+	//used to maintain tree properties
 	public void transplant(Node u, Node v) {
 		if (u.parent == null) {
 			this.root = v;
@@ -191,11 +170,10 @@ public class BinarySearchTree {
 		}
 	}
 
-	// deletes a Node from the tree, ensures following BST property after
-	// deletion
+	// deletes a Node
 	public void treeDelete(Node z) {
 		if (root == null)
-            System.out.println("Empty BSTree");
+			System.out.println("Empty BSTree");
 		Node y;
 		if (z.left == null) {
 			transplant(z, z.right);
@@ -215,14 +193,11 @@ public class BinarySearchTree {
 		}
 	}
 
-	// simply inserts a new Node into the tree
 	// overloading delete method
 	public void delete(Patient value) {
 		Node x = search(value);
 		if (x != null) {
 			treeDelete(x);
 		}
-
 	}
-
 }
