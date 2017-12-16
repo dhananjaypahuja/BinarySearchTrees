@@ -11,21 +11,19 @@ public class Tester {
 
 		ArrayList<Patient> test = new ArrayList<>();
 		Random rand = new Random();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 			Patient random = new Patient(patientNames[i], rand.nextInt(10000));
 			test.add(random);
 		}
 
 		System.out.println("RBTree\n");
 		RBtree tree = new RBtree(test);
-//		RBtree.preOrderPrint(tree.root);
-		tree.inorderTreeWalk();
+		tree.preOrderPrint();
 		
 		System.out.println("\n\nRBTree - Insertion Test\n");
 		Patient newPatient = new Patient("Dhananjay", 5100);
 		tree.insert(newPatient);
-//		RBtree.preOrderPrint(tree.root);
-		tree.inorderTreeWalk();
+		tree.preOrderPrint();
 
 //		System.out.println("\n \n Insert Element\n");
 //		Patient newPatient = new Patient("Dhananjay", 900);
