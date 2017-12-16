@@ -51,20 +51,13 @@ public class RBtree {
 			RBtreeInsert(node);
 		}
 
-		RBtreeInsertFix(root.left);
-		RBtreeInsertFix(root.right);
+		RBtreeInsertFix(root);
 	}
 
 	private void RBtreeInsert(RBNode node) {
 
-		if (root == nil) {
-			root = node;
-			node.color = BLACK;
-			node.parent = new RBNode(new Patient("DummyNode", 0));
-		} else {
 			RBNode y = nil;
 			RBNode x = root;
-			node.color = RED;
 			while (x != nil) {
 				y = x;
 				if (node.key.id < y.key.id) {
@@ -84,13 +77,12 @@ public class RBtree {
 			node.left = nil;
 			node.right = nil;
 			node.color = RED;
+			RBtreeInsertFix(node);
 		}
-	}
 
 	public void RBinsert(Patient newPatient) {
 		RBNode node = new RBNode(newPatient);
 		RBtreeInsert(node);
-		RBtreeInsertFix(node);
 	}
 
 	public void RBdelete(Patient newPatient) {
@@ -99,62 +91,62 @@ public class RBtree {
 		RBtreeDelete(node);
 	}
 
-	private void RBtreeInsertFix(RBNode node) {
-		while (node.parent.color == RED) {
-			RBNode y = nil;
-			if (node.parent == node.parent.parent.left) {
-				y = node.parent.parent.right;
+	private void RBtreeInsertFix(RBNode z) {
+		RBNode y = nil;
+		while (z.parent.color == RED) {
+			if (z.parent == z.parent.parent.left) {
+				y = z.parent.parent.right;
 
-				if (y != nil && y.color == RED) {
-					node.parent.color = BLACK;
+				if (y.color == RED) {
+					z.parent.color = BLACK;
 					y.color = BLACK;
-					node.parent.parent.color = RED;
-					node = node.parent.parent;
-				} else if (node == node.parent.right) {
-					node = node.parent;
-					rotateLeft(node);
+					z.parent.parent.color = RED;
+					z = z.parent.parent;
+				} else if (z == z.parent.right) {
+					z = z.parent;
+					rotateLeft(z);
 				}
-				node.parent.color = BLACK;
-				node.parent.parent.color = RED;
-				rotateRight(node.parent.parent);
-			} else if (node.parent == node.parent.parent.right) {
-				y = node.parent.parent.left;
+				z.parent.color = BLACK;
+				z.parent.parent.color = RED;
+				rotateRight(z.parent.parent);
+			} else if (z.parent == z.parent.parent.right) {
+				y = z.parent.parent.left;
 				if (y != nil && y.color == RED) {
-					node.parent.color = BLACK;
+					z.parent.color = BLACK;
 					y.color = BLACK;
-					node.parent.parent.color = RED;
-					node = node.parent.parent;
-				} else if (node == node.parent.left) {
-					node = node.parent;
-					rotateRight(node);
+					z.parent.parent.color = RED;
+					z = z.parent.parent;
+				} else if (z == z.parent.left) {
+					z = z.parent;
+					rotateRight(z);
 				}
-				node.parent.color = BLACK;
-				node.parent.parent.color = RED;
-				rotateLeft(node.parent.parent);
+				z.parent.color = BLACK;
+				z.parent.parent.color = RED;
+				rotateLeft(z.parent.parent);
 			}
 		}
 		root.color = BLACK;
 	}
 
-	private RBNode rotateLeft(RBNode node) {
-		RBNode temp = node.right;
-		node.right = temp.left;
-		if (temp.right != nil) {
-			temp.left.parent = node;
+	private RBNode rotateLeft(RBNode x) {
+		RBNode y = x.right;
+		x.right = y.left;
+		if (y.right != nil) {
+			y.left.parent = x;
 		}
-		temp.parent = node.parent;
-		if (node.parent == nil) {
-			this.root = temp;
-		} else if (node == node.parent.left) {
-			node.parent.left = temp;
+		y.parent = x.parent;
+		if (x.parent == nil) {
+			this.root = y;
+		} else if (x == x.parent.left) {
+			x.parent.left = y;
 		} else
-			node.parent.right = temp;
-		temp.left = node;
-		node.parent = temp;
-		if (this.root == node) {
-			this.root = temp;
+			x.parent.right = y;
+		y.left = x;
+		x.parent = y;
+		if (this.root == x) {
+			this.root = y;
 		}
-		return temp;
+		return y;
 	}
 
 	private RBNode rotateRight(RBNode node) {
@@ -180,8 +172,13 @@ public class RBtree {
 
 	public void preOrderPrint(RBNode x) {
 		if (x != nil) {
+			int i = BLACK;
+			if (x.color == RED){
+			i = RED;
+			}
+			
 			preOrderPrint(x.left);
-			System.out.println(x.key);
+			System.out.println(x.key + "   Color: " +i);
 			preOrderPrint(x.right);
 		}
 	}
@@ -306,6 +303,14 @@ public class RBtree {
 
 	public Patient RBsearch(Patient value) {
 		return RBtreeSearch(root, value).key;
+	}
+	
+	public void printSearchResult(Patient s){
+		if(s != null){
+			System.out.println("Patient: "+ s + " found!");
+		} else {
+			System.out.println("Patient not found!");
+		}
 	}
 }
 

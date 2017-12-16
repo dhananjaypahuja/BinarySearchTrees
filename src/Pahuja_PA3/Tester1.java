@@ -25,11 +25,16 @@ public class Tester1 {
 		tree.RBinsert(newPatient);
 		tree.preOrderPrint();
 		
+		System.out.println("\n\nRBTree - Searching Test (Pt1)\n");
+		Patient s = tree.RBsearch(newPatient);
+		tree.printSearchResult(s);
+		
 		System.out.println("\n\nRBTree - Deletion Test\n");
 		tree.RBdelete(newPatient);
 		tree.preOrderPrint();
 		
-		System.out.println("\n\nRBTree - Searching Test\n");
-		tree.RBsearch(newPatient);
+		System.out.println("\n\nRBTree - Searching Test (Pt2)\n");
+		s = tree.RBsearch(newPatient);
+		tree.printSearchResult(s);
 	}
 }
