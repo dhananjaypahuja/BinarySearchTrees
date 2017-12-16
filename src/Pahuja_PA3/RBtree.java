@@ -2,14 +2,11 @@ package Pahuja_PA3;
 
 import java.util.ArrayList;
 
-import Pahuja_PA2.Patient;
-import Pahuja_PA2.BinarySearchTree.Node;
-
 public class RBtree {
 
 	private final int RED = 0;
 	private final int BLACK = 1;
-	
+
 	public RBNode root;
 	public RBNode nil = new RBNode();
 
@@ -27,9 +24,9 @@ public class RBtree {
 			this.right = null;
 			this.color = BLACK;
 		}
-		
-		public RBNode(Patient node) {
-			this.key = node;
+
+		public RBNode(Patient element) {
+			this.key = element;
 			this.parent = nil;
 			this.left = nil;
 			this.right = nil;
@@ -46,6 +43,7 @@ public class RBtree {
 	}
 
 	public RBtree(ArrayList<Patient> test) {
+		// TODO Auto-generated constructor stub
 		root = nil;
 
 		for (Patient element : test) {
@@ -89,10 +87,16 @@ public class RBtree {
 		}
 	}
 
-	public void insert(Patient element) {
-		RBNode node = new RBNode(element);
+	public void RBinsert(Patient newPatient) {
+		RBNode node = new RBNode(newPatient);
 		RBtreeInsert(node);
 		RBtreeInsertFix(node);
+	}
+
+	public void RBdelete(Patient newPatient) {
+		RBNode node = new RBNode(newPatient);
+		node = RBtreeSearch(root, newPatient);
+		RBtreeDelete(node);
 	}
 
 	private void RBtreeInsertFix(RBNode node) {
@@ -185,7 +189,7 @@ public class RBtree {
 	public void preOrderPrint() {
 		preOrderPrint(root);
 	}
-	
+
 	public void RBTransplant(RBNode u, RBNode v) {
 		if (u.parent == nil) {
 			this.root = v;
@@ -194,10 +198,10 @@ public class RBtree {
 		} else {
 			u.parent.right = v;
 		}
-		
+
 		v.parent = u.parent;
 	}
-	
+
 	public void RBtreeDelete(RBNode z) {
 		RBNode y = z;
 		RBNode x = new RBNode();
@@ -228,76 +232,80 @@ public class RBtree {
 			RBtreeDeleteFix(x);
 		}
 	}
-	
-	public void RBtreeDeleteFix (RBNode x) {
+
+	public void RBtreeDeleteFix(RBNode x) {
 		RBNode w = new RBNode();
-		while(x != root && x.color == BLACK){
-		if(x == x.parent.left){
-			w = x.parent.right;
-			if(w.color == RED){	//Case1
-				w.color=BLACK;
-				x.parent.color = RED;
-				rotateLeft(x.parent);
-				w=x.parent.right;
-			}
-			if(w.left.color==BLACK && w.right.color==BLACK){	//Case2
-				w.color = RED;
-				x = x.parent;
-			} else if (w.right.color==BLACK){ //Case3
-				w.left.color = BLACK;
-				w.color = RED;
-				rotateRight(w);
+		while (x != root && x.color == BLACK) {
+			if (x == x.parent.left) {
 				w = x.parent.right;
-			}
-			//Case4
-			w.color = x.parent.color;
-			x.parent.color = BLACK;
-			w.right.color = BLACK;
-			rotateLeft(x.parent);
-			x = root;
-		}
-		else {
-			w = x.parent.left;
-			if(w.color == RED){	//Case1
-				w.color=BLACK;
-				x.parent.color = RED;
-				rotateRight(x.parent);
-				w=x.parent.left;
-			}
-			if(w.right.color==BLACK && w.left.color==BLACK){	//Case2
-				w.color = RED;
-				x = x.parent;
-			} else if (w.left.color==BLACK){ //Case3
+				if (w.color == RED) { // Case1
+					w.color = BLACK;
+					x.parent.color = RED;
+					rotateLeft(x.parent);
+					w = x.parent.right;
+				}
+				if (w.left.color == BLACK && w.right.color == BLACK) { // Case2
+					w.color = RED;
+					x = x.parent;
+				} else if (w.right.color == BLACK) { // Case3
+					w.left.color = BLACK;
+					w.color = RED;
+					rotateRight(w);
+					w = x.parent.right;
+				}
+				// Case4
+				w.color = x.parent.color;
+				x.parent.color = BLACK;
 				w.right.color = BLACK;
-				w.color = RED;
-				rotateLeft(w);
+				rotateLeft(x.parent);
+				x = root;
+			} else {
 				w = x.parent.left;
+				if (w.color == RED) { // Case1
+					w.color = BLACK;
+					x.parent.color = RED;
+					rotateRight(x.parent);
+					w = x.parent.left;
+				}
+				if (w.right.color == BLACK && w.left.color == BLACK) { // Case2
+					w.color = RED;
+					x = x.parent;
+				} else if (w.left.color == BLACK) { // Case3
+					w.right.color = BLACK;
+					w.color = RED;
+					rotateLeft(w);
+					w = x.parent.left;
+				}
+				// Case4
+				w.color = x.parent.color;
+				x.parent.color = BLACK;
+				w.left.color = BLACK;
+				rotateRight(x.parent);
+				x = root;
 			}
-			//Case4
-			w.color = x.parent.color;
-			x.parent.color = BLACK;
-			w.left.color = BLACK;
-			rotateRight(x.parent);
-			x = root;
-		}
 		}
 		x.color = BLACK;
 	}
-	
+
 	public RBNode treeMinimum(RBNode x) {
 		while (x.left != nil) {
 			x = x.left;
 		}
 		return x;
 	}
-	
-	public RBNode RBtreeSearch(RBNode x, Patient target) // Patient or int target.key?
+
+	public RBNode RBtreeSearch(RBNode x, Patient target) // Patient or int
+															// target.key?
 	{
 		if (x == nil || target.id == x.key.id)
 			return x;
 		if (target.id < x.key.id) // <||>
 			return RBtreeSearch(x.left, target);
 		return RBtreeSearch(x.right, target);
+	}
+
+	public Patient RBsearch(Patient value) {
+		return RBtreeSearch(root, value).key;
 	}
 }
 
